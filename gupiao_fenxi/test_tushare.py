@@ -3,7 +3,7 @@ import tushare as  ts
 re = ts.fund_holdings(2018, 3)
 # print(type(re))
 # re.to_excal('./tushare_out/fund_holdings.xlsx')
-# print(re)
+# print(re)  
 
 
 df = ts.get_hist_data('000875')
