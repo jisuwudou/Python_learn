@@ -27,11 +27,7 @@ def guanzhugroup(groupid):
         print('第几页='+str(nums))
         urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=4197189808619503&page="+str(nums)
         respone = requests.get(urluser, headers=headetr2, verify=False)
-        # responejson=json.loads(respone.text)
-        # print(responejson)
-        # if responejson['errno'] != None:
-        #     print(responejson['errno'])
-        #     time.sleep(30)
+
         print(respone)
         print(respone.text)
         pattern = re.compile('\['+'(.*?)'+']',re.S)
@@ -45,17 +41,15 @@ def guanzhugroup(groupid):
         # print(len(card_group))
         for num in range(0, len(card_group)):
             member = card_group[num]
-            print
             print(member['member']['id'])
-            print
-            print(member['member']['screen_name'])
+            print(print(member['member']['screen_name']))
+
             postData2 = {"uid": member['member']['id'], 'st': 'a91aa2'}  # post请求传的数据
             url = 'https://m.weibo.cn/api/friendships/create'
             # https: // m.weibo.cn / api / friendships / create
             respone1 = requests.post(url, data=postData2, headers=headetr2,verify=False)
             print(respone1.text)
             json_str = respone1.content
-        #     print
 
             # print(json_str.decode('gbk').encode('utf-8').decode('unicode_escape'))
         #
