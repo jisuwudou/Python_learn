@@ -14,6 +14,8 @@ import xlsxwriter
 
 channel = "Samsung"  # 频道名dd
 channel_id = 'UCWwgaK7x0_FR1goeSRazfsQ'  # 频道ID
+channel = "BabiezTV"
+channel_id = 'UCzVw9odnihM5PgKSv5UnDPA'
 
 
 class YoukuCrawler:
@@ -79,6 +81,7 @@ class YoukuCrawler:
                                                'key': self.app_key})
                 page = results.content
                 videos = json.loads(page, encoding="utf-8")['items']
+                print(videos)
                 for video in videos:
 
                     try:
@@ -96,13 +99,13 @@ class YoukuCrawler:
                     otherStyleTime = dateArray.strftime("%Y-%m-%d")
                     print(otherStyleTime, count)
 
-                    if (otherStyleTime >= '2017-11-01' and otherStyleTime <= "2018-12-31"):
+                    if (otherStyleTime >= '2017-1-01' and otherStyleTime <= "2018-12-31"):
                         print(video['snippet']['title'], otherStyleTime, like_count, int(video['statistics']['viewCount']))
 
-                        f.write("%s\t%s\t%s\t%s\n" % (
-                        video['snippet']['title'], otherStyleTime, str(like_count), video['statistics']['viewCount']))
+                        f.write("%s\t%s\t like_count=%s\t viewCount=%s\t commentCount=%s\n" % (
+                        video['snippet']['title'], otherStyleTime, str(like_count), video['statistics']['viewCount'], video['statistics']['commentCount']))
 
-                    if otherStyleTime <= '2017-10-01':
+                    if otherStyleTime < '2017-01-01':
                         return 1
 
             except Exception as e:
