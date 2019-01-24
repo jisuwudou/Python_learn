@@ -23,7 +23,7 @@ def guanzhugroup(groupid):
         'Upgrade-Insecure-Requests': '1',
         'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Mobile Safari/537.36'
     }
-    for nums in range(13, 41):  # 这里是模拟页数
+    for nums in range(24, 41):  # 这里是模拟页数
         print('第几页='+str(nums))
         urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=4197189808619503&page="+str(nums)
         respone = requests.get(urluser, headers=headetr2, verify=False)
