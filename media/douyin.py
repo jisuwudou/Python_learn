@@ -106,9 +106,9 @@ class Spider():
         video_urls = []
         unique_id = ''
         # 当获取的id不是用户的id时：
-        while unique_id != user_id:
+        while unique_id != user_id:#57837235721
             # 获取url-下载
-            search_url = 'https://api.amemv.com/aweme/v1/discover/search/?keyword={}&count=10&type=1&aid=1128'.format(user_id)
+            search_url = 'https://api.amemv.com/aweme/v1/discover/search/?keyword={}&type=1&aid=1128'.format(user_id)
             res = requests.get(url=search_url, verify=False)
             res_dic = json.loads(res.text)
             uid = res_dic['user_list'][0]['user_info']['uid']
