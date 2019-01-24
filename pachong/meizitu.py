@@ -19,7 +19,7 @@ all_url = 'http://www.mmjpg.com/hot/' #'http://www.mzitu.com/all'  ##开始的UR
 # def savefile(name):
 #     path = "g:/pachong"
 #     if not os.path.exists("g:/pachong"):
-#         os.makedirs(path)
+#         os.makedirs(path)   
 def getSoupByUrl(url):
     html = requests.get(url, headers=headers)
     html.encoding = 'utf-8'
