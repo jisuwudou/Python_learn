@@ -9,10 +9,10 @@ import requests
 import sys
 import xlsxwriter
 
-reload(sys)
-sys.setdefaultencoding("utf-8")
+# reload(sys)
+# sys.setdefaultencoding("utf-8")
 
-channel = "Samsung"  # 频道名
+channel = "Samsung"  # 频道名dd
 channel_id = 'UCWwgaK7x0_FR1goeSRazfsQ'  # 频道ID
 
 

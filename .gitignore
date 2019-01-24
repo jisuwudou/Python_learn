@@ -3,3 +3,5 @@
 .idea/vcs.xml
 .idea/workspace.xml
 venv/Scripts/pythonw.exe
+.idea/Python_learn.iml
+.idea/modules.xml
