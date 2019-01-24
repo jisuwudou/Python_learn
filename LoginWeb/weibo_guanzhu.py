@@ -23,7 +23,7 @@ def guanzhugroup(groupid):
         'Upgrade-Insecure-Requests': '1',
         'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Mobile Safari/537.36'
     }
-    for nums in range(11, 41):  # 这里是模拟页数
+    for nums in range(13, 41):  # 这里是模拟页数
         print('第几页='+str(nums))
         urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=4197189808619503&page="+str(nums)
         respone = requests.get(urluser, headers=headetr2, verify=False)
@@ -49,7 +49,7 @@ def guanzhugroup(groupid):
             print(member['member']['id'])
             print
             print(member['member']['screen_name'])
-            postData2 = {"uid": member['member']['id'], 'st': 'a65943'}  # post请求传的数据
+            postData2 = {"uid": member['member']['id'], 'st': 'a91aa2'}  # post请求传的数据
             url = 'https://m.weibo.cn/api/friendships/create'
             # https: // m.weibo.cn / api / friendships / create
             respone1 = requests.post(url, data=postData2, headers=headetr2,verify=False)
@@ -57,7 +57,7 @@ def guanzhugroup(groupid):
             json_str = respone1.content
         #     print
 
-            print(json_str.decode('gbk').encode('utf-8').decode('unicode_escape'))
+            # print(json_str.decode('gbk').encode('utf-8').decode('unicode_escape'))
         #
             time.sleep(10)
 
