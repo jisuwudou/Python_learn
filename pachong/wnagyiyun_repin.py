@@ -17,29 +17,44 @@ post加密部分也给出了，可以参考原帖：
 链接：https://www.zhihu.com/question/36081767/answer/140287795
 来源：知乎
 '''
-from Crypto.Cipher import AES
+from Cryptodome.Cipher import AES
 import base64
 import requests
 import json
 import codecs
 import time
-
+import random
 # 头部信息
 headers = {
-    'Host':"music.163.com",
-    'Accept-Language':"zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3",
-    'Accept-Encoding':"gzip, deflate",
-    'Content-Type':"application/x-www-form-urlencoded",
-    'Cookie':"_ntes_nnid=754361b04b121e078dee797cdb30e0fd,1486026808627; _ntes_nuid=754361b04b121e078dee797cdb30e0fd; JSESSIONID-WYYY=yfqt9ofhY%5CIYNkXW71TqY5OtSZyjE%2FoswGgtl4dMv3Oa7%5CQ50T%2FVaee%2FMSsCifHE0TGtRMYhSPpr20i%5CRO%2BO%2B9pbbJnrUvGzkibhNqw3Tlgn%5Coil%2FrW7zFZZWSA3K9gD77MPSVH6fnv5hIT8ms70MNB3CxK5r3ecj3tFMlWFbFOZmGw%5C%3A1490677541180; _iuqxldmzr_=32; vjuids=c8ca7976.15a029d006a.0.51373751e63af8; vjlast=1486102528.1490172479.21; __gads=ID=a9eed5e3cae4d252:T=1486102537:S=ALNI_Mb5XX2vlkjsiU5cIy91-ToUDoFxIw; vinfo_n_f_l_n3=411a2def7f75a62e.1.1.1486349441669.1486349607905.1490173828142; P_INFO=m15527594439@163.com|1489375076|1|study|00&99|null&null&null#hub&420100#10#0#0|155439&1|study_client|15527594439@163.com; NTES_CMT_USER_INFO=84794134%7Cm155****4439%7Chttps%3A%2F%2Fsimg.ws.126.net%2Fe%2Fimg5.cache.netease.com%2Ftie%2Fimages%2Fyun%2Fphoto_default_62.png.39x39.100.jpg%7Cfalse%7CbTE1NTI3NTk0NDM5QDE2My5jb20%3D; usertrack=c+5+hljHgU0T1FDmA66MAg==; Province=027; City=027; _ga=GA1.2.1549851014.1489469781; __utma=94650624.1549851014.1489469781.1490664577.1490672820.8; __utmc=94650624; __utmz=94650624.1490661822.6.2.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; playerid=81568911; __utmb=94650624.23.10.1490672820",
-    'Connection':"keep-alive",
-    'Referer':'http://music.163.com/'
+    # 'Host':"music.163.com",
+    # 'Accept-Language':"zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3",
+    # 'Accept-Encoding':"gzip, deflate",
+    # 'Content-Type':"application/x-www-form-urlencoded",
+    # 'Cookie':"_iuqxldmzr_=32; _ntes_nnid=bfdbd07aaac7c124fdc38503b965c4b8,1548386605103; _ntes_nuid=bfdbd07aaac7c124fdc38503b965c4b8; WM_NI=zdTOoBfXD%2Bxt%2FxxKVl52zicv51MilB5UkLJQhL7KCUm0pKDBQqFFBCNsPzcaaSyFAGX5X7s3zuHRtgbzfKhO%2BlJCQCiPdPpHlbVnvL9DLe%2Bb%2F0NtnTsMdFYTaJ48uoM2MjI%3D; WM_NIKE=9ca17ae2e6ffcda170e2e6eea8c44d96b3a2afd279adef8ea3d14f869e9abbee6da88aaea7dc6087b796d7f02af0fea7c3b92ababc9cb0ee4aa6888cccfb80eda8b8acd568f7eeb68ae27ef7ef838aef4af78ba5adc95bac94f9acc25faff0c0acc74a93af8aa7c1498eada09be26ba38db7a7c44d9ceb98d8f239baab88b3f76da2a6aaaceb45e9b486a4d449ab90acb1f344b0be9a8ff548fb9c8486aa6aedf08295ed60b193aca7dc60a396fcd9f8658fee838bcc37e2a3; WM_TID=NyHTsYpWIMVERAABUAI4hZEfFNSViZrn; JSESSIONID-WYYY=4v6vCnztl8%2FogQeGszJ7%2BdH%2BAX5JjYOp0%2BDpEpCe53bj5W3yN09MOyfy2r0tU26OSXu1XnDtuj6Bf77ocbNEtdGdahJbQPTDAAvZaCEJy%2FSFF7uRdrrwXI%5ClxGljXHOVgD2G3RzIo%2BS0S6CEdlEegvSZ5Ye373%2BkCsAKyNgayqQtrJvi%3A1548405367855",
+    # 'Connection':"keep-alive",
+    # 'Referer':'http://music.163.com/',
+
+    'Accept': '*/*',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Language': 'zh-CN,zh;q=0.9',
+    'Connection': 'keep-alive',
+    'Content-Length': '474',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Cookie': '_iuqxldmzr_=32; _ntes_nnid=bfdbd07aaac7c124fdc38503b965c4b8,1548386605103; _ntes_nuid=bfdbd07aaac7c124fdc38503b965c4b8; WM_NI=zdTOoBfXD%2Bxt%2FxxKVl52zicv51MilB5UkLJQhL7KCUm0pKDBQqFFBCNsPzcaaSyFAGX5X7s3zuHRtgbzfKhO%2BlJCQCiPdPpHlbVnvL9DLe%2Bb%2F0NtnTsMdFYTaJ48uoM2MjI%3D; WM_NIKE=9ca17ae2e6ffcda170e2e6eea8c44d96b3a2afd279adef8ea3d14f869e9abbee6da88aaea7dc6087b796d7f02af0fea7c3b92ababc9cb0ee4aa6888cccfb80eda8b8acd568f7eeb68ae27ef7ef838aef4af78ba5adc95bac94f9acc25faff0c0acc74a93af8aa7c1498eada09be26ba38db7a7c44d9ceb98d8f239baab88b3f76da2a6aaaceb45e9b486a4d449ab90acb1f344b0be9a8ff548fb9c8486aa6aedf08295ed60b193aca7dc60a396fcd9f8658fee838bcc37e2a3; WM_TID=NyHTsYpWIMVERAABUAI4hZEfFNSViZrn; JSESSIONID-WYYY=4v6vCnztl8%2FogQeGszJ7%2BdH%2BAX5JjYOp0%2BDpEpCe53bj5W3yN09MOyfy2r0tU26OSXu1XnDtuj6Bf77ocbNEtdGdahJbQPTDAAvZaCEJy%2FSFF7uRdrrwXI%5ClxGljXHOVgD2G3RzIo%2BS0S6CEdlEegvSZ5Ye373%2BkCsAKyNgayqQtrJvi%3A1548405367855',
+    'Host': 'music.163.com',
+    'Origin': 'https://music.163.com',
+    'Referer': 'https://music.163.com/song?id=494862393',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
 }
 # 设置代理服务器
 proxies= {
-            'http:':'http://121.232.146.184',
-            'https:':'https://144.255.48.197'
+            'http:': 'http://110.179.67.*:*',
+            'http:': 'https://114.215.95.*:*',
+            'http:': 'http://202.38.92.*:*',
+            'http:': 'http://218.20.54.*:*',
+            'http:': 'http://221.228.17.*:*',
         }
-
+# 494862393
 # offset的取值为:(评论页数-1)*20,total第一页为true，其余页为false
 # first_param = '{rid:"", offset:"0", total:"true", limit:"20", csrf_token:""}' # 第一个参数
 second_param = "010001" # 第二个参数
@@ -48,9 +63,14 @@ third_param = "00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b7251
 # 第四个参数
 forth_param = "0CoJUm6Qyw8W8jud"
 
+UA = ["UA_1", "UA_2"]
+
+
+
+
 # 获取参数
 def get_params(page): # page为传入页数
-    iv = "0102030405060708"
+    iv = b"0102030405060708"
     first_key = forth_param
     second_key = 16 * 'F'
     if(page == 1): # 如果为第一页
@@ -60,12 +80,12 @@ def get_params(page): # page为传入页数
         offset = str((page-1)*20)
         first_param = '{rid:"", offset:"%s", total:"%s", limit:"20", csrf_token:""}' %(offset,'false')
         h_encText = AES_encrypt(first_param, first_key, iv)
-    h_encText = AES_encrypt(h_encText, second_key, iv)
+    h_encText = AES_encrypt(str(h_encText,'utf-8'), second_key, iv)
     return h_encText
 
 # 获取 encSecKey
 def get_encSecKey():
-    encSecKey = "257348aecb5e556c066de214e531faadd1c55d814f9be95fd06d6bff9f4c7a41f831f6394d5a3fd2e3881736d94a02ca919d952872e7d0a50ebfa1769a7a62d512f5f1ca21aec60bc3819a9c3ffca5eca9a0dba6d6f7249b06f5965ecfff3695b54e1c28f3f624750ed39e7de08fc8493242e26dbc4484a01c76f739e135637c"
+    encSecKey = "218593db29c6e104f337331d159c4e8acc36c34265c43f4a282e994647fad84a87ecd37cd29a9d2256dba666494366f966946a434aed29efb6a6fe395c2af211e2ce8d7214e301d3df7556ac26eafee3b1aeea7284c70dd313a14c136973e7639229e14af1990e7f9a436879d7937e52667ad2e9ec92fcbfb6d43d6daff0defc"
     return encSecKey
 
 
@@ -73,10 +93,16 @@ def get_encSecKey():
 def AES_encrypt(text, key, iv):
     pad = 16 - len(text) % 16
     text = text + pad * chr(pad)
-    encryptor = AES.new(key, AES.MODE_CBC, iv)
-    encrypt_text = encryptor.encrypt(text)
+    key = key.encode('utf-8')
+    # iv = iv.encode('utf-8')
+    encryptor = AES.new(key, AES.MODE_CBC,iv)
+    encrypt_text = encryptor.encrypt(text.encode('utf-8'))
     encrypt_text = base64.b64encode(encrypt_text)
     return encrypt_text
+
+def _choose_randomly(l):
+    random.shuffle(l)
+    return l[0]
 
 # 获得评论json数据
 def get_json(url, params, encSecKey):
@@ -84,7 +110,8 @@ def get_json(url, params, encSecKey):
          "params": params,
          "encSecKey": encSecKey
     }
-    response = requests.post(url, headers=headers, data=data,proxies = proxies)
+    headers["User-Agent"] = _choose_randomly(UA)
+    response = requests.post(url, headers=headers, data=data,proxies=proxies)
     return response.content
 
 # 抓取热门评论，返回热评列表
@@ -150,8 +177,9 @@ def save_to_file(list,filename):
 
 if __name__ == "__main__":
     start_time = time.time() # 开始时间
-    url = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_186016/?csrf_token="
-    filename = u"晴天.txt"
+    songid = 494862393
+    url = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_%d/?csrf_token=" % songid
+    filename = u"eden.txt"
     all_comments_list = get_all_comments(url)
     save_to_file(all_comments_list,filename)
     end_time = time.time() #结束时间
