@@ -26,7 +26,11 @@ def getvideourls(url):
         print(e)
         return []
     json_ = json.loads(infos)
-    durl = json_['durl']
+    durl=''
+    if 'durl' in json_:
+        durl = json_['durl']
+    else:
+        durl = json_['data']['durl']
     print(durl)
 
 
