@@ -32,6 +32,14 @@ def getvideourls(url):
     else:
         durl = json_['data']['durl']
     print(durl)
+    """
+            不知道是什么原因
+            每一个视频的最后一个片段的url都无法下载视频
+            经试验将'mirroross'替换成'mirrorcos'后可下载
+    """
+
+    urls = [re.sub('mirror.*?\.', 'mirrorcos.', url['url']) for url in durl]
+    return urls
 
 
 getvideourls(url1)
