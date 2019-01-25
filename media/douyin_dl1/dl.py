@@ -3,7 +3,8 @@ from splinter.driver.webdriver.chrome import Options, Chrome
 from splinter.browser import Browser
 from contextlib import closing
 import requests, json, time, re, os, sys
-
+import urllib3
+urllib3.disable_warnings()
 
 class douyin():
     def __init__(self):
