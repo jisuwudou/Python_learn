@@ -8,8 +8,26 @@ import time
 import re
 # reload(sys)
 # sys.setdefaultencoding('utf8')
-def guanzhugroup(groupid):
-    headetr2 = {
+headers = {
+        'Accept': 'application/json, text/plain, */*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'zh-CN,zh;q=0.9',
+        'Connection': 'keep-alive',
+        # 'Content-Length': '44',
+        # 'Content-Type': 'application/x-www-form-urlencoded',
+        'Cookie': '_T_WM=0f1f2c8e92c72e7d986dc63fefb87f64; WEIBOCN_FROM=1110005030; SUB=_2A25xSsWIDeRhGeNP7lQU9inFyz6IHXVStOvArDV6PUJbkdAKLRnnkW1NTm4vJQhBOMoBnTYmc_Xsb0Q5Kt7zj_FC; SUHB=010WrrCurcsPXG; SCF=AolRZuJB_m_0q_bt_OvesfL4DHtN83fNn0fjNIwq6AeJBIX8Clm38_hUKhBRBHAnlniEHictjc3nUy1Wkz17WPw.; SSOLoginState=1548662232; MLOGIN=1; XSRF-TOKEN=089811; M_WEIBOCN_PARAMS=luicode%3D10000011%26lfid%3D102803%26uicode%3D20000174',
+        'Host': 'm.weibo.cn',
+        # 'MWeibo-Pwa': '1',
+        # 'Origin': 'https://m.weibo.cn',
+        # 'Referer': 'https://m.weibo.cn/',
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36',
+        # 'X-Requested-With': 'XMLHttpRequest'
+
+        # 'RA-Ver': '3.0.8',
+        # 'Cache-Control': 'max-age=0',
+        # 'RA-Sid': 'B781E81A-20150402-024118-ce25e1-ba5345',
+    }
+headetr2 = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'zh-CN,zh;q=0.9',
@@ -23,10 +41,12 @@ def guanzhugroup(groupid):
         'Upgrade-Insecure-Requests': '1',
         'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Mobile Safari/537.36'
     }
-    for nums in range(33, 41):  # 这里是模拟页数
+def guanzhugroup(groupid):
+
+    for nums in range(36, 41):  # 这里是模拟页数
         print('第几页='+str(nums))
         urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=4197189808619503&page="+str(nums)
-        respone = requests.get(urluser, headers=headetr2, verify=False)
+        respone = requests.get(urluser, headers=headers, verify=False)
 
         print(respone)
         print(respone.text)
@@ -44,7 +64,7 @@ def guanzhugroup(groupid):
             print(member['member']['id'])
             print(print(member['member']['screen_name']))
 
-            postData2 = {"uid": member['member']['id'], 'st': '6e7e13'}  # post请求传的数据
+            postData2 = {"uid": member['member']['id'], 'st': '244e4b'}  # post请求传的数据
             url = 'https://m.weibo.cn/api/friendships/create'
             # https: // m.weibo.cn / api / friendships / create
             respone1 = requests.post(url, data=postData2, headers=headetr2,verify=False)
@@ -56,5 +76,55 @@ def guanzhugroup(groupid):
             time.sleep(10)
 
     time.sleep(30)
-guanzhugroup(1)
+# guanzhugroup(1)
+
+dianzanFirendsurl = "https://m.weibo.cn/feed/friends?max_id="#获取关注的用户发的微博
+giveHeartUrl = 'https://m.weibo.cn/api/attitudes/create'#点赞
+dianzanshu=1
+def dianzan(max_id):
+
+    while max_id != "" and max_id != None and max_id != 0 and max_id != '0':
+
+        needStop = False
+        urluser = dianzanFirendsurl + str(max_id)
+        respone = requests.get(urluser, headers=headers, verify=False)
+        print(respone.text)
+        jsondata = json.loads(respone.content)['data']
+        max_id = jsondata['max_id']
+        userdatas = jsondata['statuses']
+
+        print('max id =' + str(max_id))
+        for index in range(0,len(userdatas)):
+            # print(type(userdatas[index]['id']))
+            giveHeartData = {
+
+                "id": userdatas[index]['id'],
+                "attitude": "heart",
+                "st": "78d37a",
+            }
+
+            heartResponse = requests.post(giveHeartUrl, data=giveHeartData, headers=headers, verify=False)
+            heartJson = json.loads(heartResponse.content)
+            print('name = '+userdatas[index]['user']['screen_name']+' id = '+str(userdatas[index]['id']))
+            if heartJson['ok'] == 0:
+                print("******点赞失败="+heartJson['errno']+" msg="+heartJson['msg'])
+                needStop = True
+                break
+            # print(heartResponse.text)
+            print("总点赞数="+str(dianzanshu))
+            dianzanshu += 1
+
+            time.sleep(2)
+
+        if needStop:
+            break
+        # break
+
+    #
+
+    # print(jsaondata)
+    # pattern = re.compile('\[' + '(.*?)' + ']', re.S)
+
+
+dianzan(4333465032334598)
     # https://m.weibo.cn/groupChat/userChat/groupMembers?group_id=4197189808619503
