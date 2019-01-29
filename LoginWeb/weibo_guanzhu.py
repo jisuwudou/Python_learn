@@ -40,15 +40,20 @@ headetr2 = {
         'Host': 'm.weibo.cn',
         'RA-Sid': 'B781E81A-20150402-024118-ce25e1-ba5345',
         'RA-Ver': '3.0.8',
-        'Upgrade-Insecure-Requests': '1',
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Mobile Safari/537.36'
+        # 'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Mobile Safari/537.36',
+        'Referer': 'https://m.weibo.cn/message',
     }
+
+# groupchatstheaders = {
+#
+# }
 def guanzhugroup(groupid):
 
     for nums in range(11, 49):  # 这里是模拟页数
         print('***************第几页='+str(nums))
         # urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=4197189808619503&page="+str(nums)
-        urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=4075182799395477&page=" + str(nums)
+        urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=%s&page=%d" % (groupid, nums)
 
         respone = requests.get(urluser, headers=headetr2, verify=False)
 
@@ -60,18 +65,20 @@ def guanzhugroup(groupid):
         json_base = json.loads(json1)
         print(json_base)
 
-
         card_group = json_base['card_group']
+
+        st_url = 'https://m.weibo.cn/api/config/'
+        st_respone = requests.post(st_url, headers=headetr2, verify=False)
+        st_json = json.loads(st_respone.content)
+        print('st = ' + st_json['data']['st'])
+
         # print(len(card_group))
         for num in range(0, len(card_group)):
             member = card_group[num]
             print(member['member']['id'])
             print(print(member['member']['screen_name']))
 
-            st_url = 'https://m.weibo.cn/api/config/'
-            st_respone = requests.post(st_url, headers=headetr2, verify=False)
-            st_json = json.loads(st_respone.content)
-            print('st = '+st_json['data']['st'])
+
 
             postData2 = {"uid": member['member']['id'], 'st': st_json['data']['st']}  # post请求传的数据
             url = 'https://m.weibo.cn/api/friendships/create'
@@ -82,11 +89,34 @@ def guanzhugroup(groupid):
             json_str = respone1.content
 
             # print(json_str.decode('gbk').encode('utf-8').decode('unicode_escape'))
-        #
+
+
+            chatgroup_url = 'https://m.weibo.cn/groupChat/userChat/chat?group_id=' + str(groupid)
+            chatgroup_respone = requests.get(chatgroup_url, headers=headetr2, verify=False)
+            print(chatgroup_respone.text)
+            pattern = re.compile(r'"st":"(.)"')
+            chat_st = re.findall(pattern, chatgroup_respone.text)
+            # test = chatgroup_respone.text.find('st":')
+            # print(test)
+            sendmsg_url = 'https://m.weibo.cn/groupChat/userChat/sendMsg'
+            sendmsg_data = {
+                'content': '@%s 关注了回粉' % member['member']['screen_name'],
+                'st': st_json['data']['st'],
+                'group_id': groupid,
+            }
+            sendmsg_respone = requests.post(st_url, headers=headetr2, data=sendmsg_data, verify=False)
+            print('send msg ret = '+sendmsg_respone.text)
+
             time.sleep(10)
 
+
+        # content: 回粉啊
+        # group_id: 4075182799395477
+        # st: a26cd1
+
     time.sleep(30)
-guanzhugroup(1)
+
+guanzhugroup(4075182799395477)
 
 # dianzanFirendsurl = "https://m.weibo.cn/feed/friends?max_id="#获取关注的用户发的微博
 # giveHeartUrl = 'https://m.weibo.cn/api/attitudes/create'#点赞
