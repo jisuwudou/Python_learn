@@ -15,7 +15,7 @@ headers = {
         'Accept-Language': 'zh-CN,zh;q=0.9',
         'Cache-Control': 'max-age=0',
         'Connection': 'keep-alive',
-        'Cookie': '_T_WM=* ***********',#步骤2.4登录微博后找到requestheader里的cookie
+        'Cookie': '_T_WM=2205df8dd5202bdc1c052b56bddae89a; SUB=_2A25xVRCVDeRhGeNP7lQU9inFyz6IHXVSubDdrDV6PUJbkdANLUnbkW1NTm4vJUwsxQXAs6jW40LLU9-1l1eZPRMi; SUHB=0y0J8GQyQ_14hD; SCF=AjwZ6V68VXmZ7JLptkr_oAL12cn4AHsPVEw-UAb9zlQasHj3aNFVGvuyUv3wzmKUprP9HwY2KPqF7mEtXRz9hTY.; SSOLoginState=1548837061; MLOGIN=1; XSRF-TOKEN=cba32a; M_WEIBOCN_PARAMS=lfid%3D102803%26luicode%3D20000174',#步骤2.4登录微博后找到requestheader里的cookie
         'Host': 'm.weibo.cn',
         'RA-Sid': 'B781E81A-20150402-024118-ce25e1-ba5345',
         'RA-Ver': '3.0.8',
@@ -88,4 +88,7 @@ def guanzhugroup(groupid):
 
     time.sleep(30)
 
-guanzhugroup(407518279*****)
+guanzhugroup(4075182799395477)
+
+
+
