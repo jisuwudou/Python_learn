@@ -15,7 +15,7 @@ headers = {
         'Accept-Language': 'zh-CN,zh;q=0.9',
         'Cache-Control': 'max-age=0',
         'Connection': 'keep-alive',
-        'Cookie': '_T_WM=2205df8dd5202bdc1c052b56bddae89a; SUB=_2A25xVRCVDeRhGeNP7lQU9inFyz6IHXVSubDdrDV6PUJbkdANLUnbkW1NTm4vJUwsxQXAs6jW40LLU9-1l1eZPRMi; SUHB=0y0J8GQyQ_14hD; SCF=AjwZ6V68VXmZ7JLptkr_oAL12cn4AHsPVEw-UAb9zlQasHj3aNFVGvuyUv3wzmKUprP9HwY2KPqF7mEtXRz9hTY.; SSOLoginState=1548837061; MLOGIN=1; XSRF-TOKEN=cba32a; M_WEIBOCN_PARAMS=lfid%3D102803%26luicode%3D20000174',#步骤2.4登录微博后找到requestheader里的cookie
+        'Cookie': '_T_WM=2205df8dd5202bdc1c052b56bddae89a; MLOGIN=1; ALF=1551430431; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WFSIx.J365qPnyElZHmG8YT5JpX5K-hUgL.Fo-pSKqfSoM4ehz2dJLoIXnLxKqL1hnL1K2LxK-L12qLB-zLxK.L1KnLB.qLxKnL1h.LB-qLxKBLBonL1h5LxK-L1K5L12BLxK-L1h.L1K2LxK-LB--LBKzt; SCF=AgkvfW2RdR1AnNgDMb47HoshwVGizqTeqvs2bB0fDdFwDef2c9c-szXXcBkKy-fe8hOPRKLAiUqzNzS9CjfMAmg.; SUB=_2A25xVRoWDeRhGeNP7lQU9inFyz6IHXVSuaZerDV6PUJbktAKLULEkW1NTm4vJYyph2ED-yGJnLLJdmySZS-uIvkf; SUHB=0LcCj9isvefkA_; SSOLoginState=1548839494; XSRF-TOKEN=2e5b49; WEIBOCN_FROM=1110005030; M_WEIBOCN_PARAMS=luicode%3D10000011%26lfid%3D1076035288641736%26fid%3D1076035137830393%26uicode%3D10000011',#步骤2.4登录微博后找到requestheader里的cookie
         'Host': 'm.weibo.cn',
         'RA-Sid': 'B781E81A-20150402-024118-ce25e1-ba5345',
         'RA-Ver': '3.0.8',
@@ -26,9 +26,9 @@ headers = {
 
 def guanzhugroup(groupid):
 
-    for nums in range(14, 49):  # 这里是模拟页数，在获取groupMembersList的返回信息里有max_pageprint('***************第几页='+str(nums))
+    for nums in range(20, 49):  # 这里是模拟页数，在获取groupMembersList的返回信息里有max_pageprint('***************第几页='+str(nums))
         print('***************第几页='+str(nums))
-        # urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=4197189808619503&page="+str(nums)
+
         urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=%s&page=%d" % (groupid, nums)
 
         respone = requests.get(urluser, headers=headers, verify=False)
@@ -52,18 +52,18 @@ def guanzhugroup(groupid):
         for num in range(0, len(card_group)):
             member = card_group[num]
             print(member['member']['id'])
-            print(print(member['member']['screen_name']))
+            print(member['member']['screen_name'])
 
             postData2 = {"uid": member['member']['id'], 'st': st_json['data']['st']}  # post请求传的数据
             url = 'https://m.weibo.cn/api/friendships/create'
 
             respone1 = requests.post(url, data=postData2, headers=headers,verify=False)
-            print(respone1.text)
+            print("create respone = "+respone1.text)
             json_str = respone1.content
 
             chatgroup_url = 'https://m.weibo.cn/groupChat/userChat/chat?group_id=' + str(groupid)
             chatgroup_respone = requests.get(chatgroup_url, headers=headers, verify=False)
-            print(chatgroup_respone.text)
+            # print(chatgroup_respone.text)
 
             try:
 
@@ -84,9 +84,9 @@ def guanzhugroup(groupid):
             except Exception as e:
                 print(e)
 
-            time.sleep(10)
+            time.sleep(30)
 
-    time.sleep(30)
+    time.sleep(60)
 
 guanzhugroup(4075182799395477)
 
