@@ -15,7 +15,7 @@ headers = {
         'Accept-Language': 'zh-CN,zh;q=0.9',
         'Cache-Control': 'max-age=0',
         'Connection': 'keep-alive',
-        'Cookie': '_T_WM=2205df8dd5202bdc1c052b56bddae89a; MLOGIN=1; ALF=1551430431; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WFSIx.J365qPnyElZHmG8YT5JpX5K-hUgL.Fo-pSKqfSoM4ehz2dJLoIXnLxKqL1hnL1K2LxK-L12qLB-zLxK.L1KnLB.qLxKnL1h.LB-qLxKBLBonL1h5LxK-L1K5L12BLxK-L1h.L1K2LxK-LB--LBKzt; SCF=AgkvfW2RdR1AnNgDMb47HoshwVGizqTeqvs2bB0fDdFwDef2c9c-szXXcBkKy-fe8hOPRKLAiUqzNzS9CjfMAmg.; SUB=_2A25xVRoWDeRhGeNP7lQU9inFyz6IHXVSuaZerDV6PUJbktAKLULEkW1NTm4vJYyph2ED-yGJnLLJdmySZS-uIvkf; SUHB=0LcCj9isvefkA_; SSOLoginState=1548839494; XSRF-TOKEN=2e5b49; WEIBOCN_FROM=1110005030; M_WEIBOCN_PARAMS=luicode%3D10000011%26lfid%3D1076035288641736%26fid%3D1076035137830393%26uicode%3D10000011',#步骤2.4登录微博后找到requestheader里的cookie
+        'Cookie': '_T_WM=7bc53011a8a353cb26566c6a96ac5907; SCF=AuBHnIuNmm18bBJyhNt2aDXMrQpmsUw7JNh3HTgfHYmcxS5v2oPPdxuaDDiRTeNTx9n-UiPq2gUgeJD8WBhqj2o.; MLOGIN=1; SUB=_2A25xUCoTDeRhGeNP7lQU9inFyz6IHXVSurZbrDV6PUJbkdAKLVPxkW1NTm4vJR0bdEH7g8w2oYVvEIpuLmJoI3Lt; SUHB=0mxEXSSYuc_n-K; SSOLoginState=1549032003; WEIBOCN_FROM=1110005030; M_WEIBOCN_PARAMS=oid%3D4334988801699578%26luicode%3D10000011%26lfid%3D1076036745121439%26fid%3D1076036963955244%26uicode%3D10000011; XSRF-TOKEN=0561f7',#步骤2.4登录微博后找到requestheader里的cookie
         'Host': 'm.weibo.cn',
         'RA-Sid': 'B781E81A-20150402-024118-ce25e1-ba5345',
         'RA-Ver': '3.0.8',
@@ -51,6 +51,7 @@ def guanzhugroup(groupid):
         # print(len(card_group))
         for num in range(0, len(card_group)):
             member = card_group[num]
+            print("*********************** next member ************************************************")
             print(member['member']['id'])
             print(member['member']['screen_name'])
 
@@ -58,6 +59,12 @@ def guanzhugroup(groupid):
             url = 'https://m.weibo.cn/api/friendships/create'
 
             respone1 = requests.post(url, data=postData2, headers=headers,verify=False)
+            respone1_json = json.loads(respone1.content)
+            if respone1_json['ok'] == 0:
+                if 'errno' in respone1_json.keys():
+                    print("****错误码："+str(respone1_json['errno']))
+                    time.sleep(2)
+                continue
             print("create respone = "+respone1.text)
             json_str = respone1.content
 
