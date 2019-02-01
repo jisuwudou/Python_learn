@@ -8,7 +8,7 @@ urllib3.disable_warnings()
 size = 0
 chunk_size = 1024
 counter = 1
-with open(r'cat.txt') as urlsfile:
+with open(r'1-30.txt') as urlsfile:
     while True:
         url = urlsfile.readline()
         # print(url)
@@ -19,7 +19,7 @@ with open(r'cat.txt') as urlsfile:
             response = requests.get(
                 url,
                 verify=False)
-            filename = 'cat/'+ str( time.time()) + '.mp4'
+            filename = 'F://medias/youtub/douyin/1-30/'+ str( time.time()) + '.mp4'
             with open(filename, "wb") as file:
                 for data in response.iter_content(chunk_size=chunk_size):
                     file.write(data)
@@ -27,9 +27,9 @@ with open(r'cat.txt') as urlsfile:
                     file.flush()
             print('finish='+str(counter))
             counter = counter + 1
-            if counter > 885:
-                os.system('shutdown -s -t 10')
-                break
+            # if counter > 885:
+            #     os.system('shutdown -s -t 10')
+            #     break
         except Exception as e:
             print(e)
     # print(url+" ")
