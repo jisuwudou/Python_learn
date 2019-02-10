@@ -15,7 +15,7 @@ headers = {
         'Accept-Language': 'zh-CN,zh;q=0.9',
         'Cache-Control': 'max-age=0',
         'Connection': 'keep-alive',
-        'Cookie': '_T_WM=7bc53011a8a353cb26566c6a96ac5907; SCF=AuBHnIuNmm18bBJyhNt2aDXMrQpmsUw7JNh3HTgfHYmcxS5v2oPPdxuaDDiRTeNTx9n-UiPq2gUgeJD8WBhqj2o.; MLOGIN=1; SUB=_2A25xUCoTDeRhGeNP7lQU9inFyz6IHXVSurZbrDV6PUJbkdAKLVPxkW1NTm4vJR0bdEH7g8w2oYVvEIpuLmJoI3Lt; SUHB=0mxEXSSYuc_n-K; SSOLoginState=1549032003; WEIBOCN_FROM=1110005030; M_WEIBOCN_PARAMS=oid%3D4334988801699578%26luicode%3D10000011%26lfid%3D1076036745121439%26fid%3D1076036963955244%26uicode%3D10000011; XSRF-TOKEN=0561f7',#步骤2.4登录微博后找到requestheader里的cookie
+        'Cookie': '_T_WM=c67e39765304ef475ada9eded5c5f999; SUB=_2A25xW70dDeRhGeNP7lQU9inFyz6IHXVSp8NVrDV6PUJbkdANLW_ykW1NTm4vJVI-tyqSrbZECQxnwq2c8SY2wHY2; SUHB=08JrWvfvc12FDr; SCF=AjdbIAjMhzrW9C3QaJ6MHl7nCfT9OI-BkGN0oyXOV2LGpNbMk1HnMXs95gbrBTLEhmBCEmmGC9vTBLw7h3yQY8c.; SSOLoginState=1549782351; MLOGIN=1; XSRF-TOKEN=487aa4; WEIBOCN_FROM=1110005030; M_WEIBOCN_PARAMS=lfid%3D102803%26luicode%3D20000174%26fid%3D1076032415031414%26uicode%3D10000011',#步骤2.4登录微博后找到requestheader里的cookie
         'Host': 'm.weibo.cn',
         'RA-Sid': 'B781E81A-20150402-024118-ce25e1-ba5345',
         'RA-Ver': '3.0.8',
@@ -26,7 +26,7 @@ headers = {
 
 def guanzhugroup(groupid):
 
-    for nums in range(35, 49):  # 这里是模拟页数，在获取groupMembersList的返回信息里有max_pageprint('***************第几页='+str(nums))
+    for nums in range(43, 49):  # 这里是模拟页数，在获取groupMembersList的返回信息里有max_pageprint('***************第几页='+str(nums))
         print('***************第几页='+str(nums))
 
         urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=%s&page=%d" % (groupid, nums)
@@ -91,9 +91,9 @@ def guanzhugroup(groupid):
             except Exception as e:
                 print(e)
 
-            time.sleep(30)
+            time.sleep(25)
 
-    time.sleep(60)
+    time.sleep(40)
 
 guanzhugroup(4075182799395477)
 
