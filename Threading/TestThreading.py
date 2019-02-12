@@ -33,10 +33,10 @@ if __name__ == '__main__':#作为模块被导入时是逻辑否，自己作为�
         url = sys.argv[1]
         file_name = url.split('/')[-1]
     else:
-        url = 'http://upload.cankaoxiaoxi.com/2016/0304/1457057742544.jpg'
+        url = 'https://upload-images.jianshu.io/upload_images/14701230-149f55dcdffcebf3'
         file_name = url.split('/')[-1]
 
-    req_heads = requests.head(url)
+    req_heads = requests.head(url, verify=False)
     filesize = int(req_heads.headers['Content-Length'])
     print("%s filesize:%s" % (file_name, filesize))
 
@@ -44,14 +44,19 @@ if __name__ == '__main__':#作为模块被导入时是逻辑否，自己作为�
     threading.BoundedSemaphore(treadMax)
 
     per_step_size = filesize // treadMax
-    print("per_step_size = "+ str(step))
+    print("per_step_size = "+ str(per_step_size))
 
     # 请空并生成文件
     tempf = open(file_name, 'w')
     tempf.close()#
 
+    index = treadMax
     with open(file_name, 'rb+') as f:
         # for i in range(1, treadMax + 1):
         #     DownloadThreading(url, (i - 1) * (filesize / treadMax), i * (filesize / treadMax), f)
-        while
+        while index > 0:
+
+            t = DownloadThreading(url, (index - 1) * per_step_size, index * per_step_size, f)
+            t.download()
+            index -= 1
         pass
