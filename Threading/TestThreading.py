@@ -43,6 +43,9 @@ if __name__ == '__main__':#作为模块被导入时是逻辑否，自己作为�
     treadMax = 3
     threading.BoundedSemaphore(treadMax)
 
+    per_step_size = filesize // treadMax
+    print("per_step_size = "+ str(step))
+
     # 请空并生成文件
     tempf = open(file_name, 'w')
     tempf.close()#
@@ -50,4 +53,5 @@ if __name__ == '__main__':#作为模块被导入时是逻辑否，自己作为�
     with open(file_name, 'rb+') as f:
         # for i in range(1, treadMax + 1):
         #     DownloadThreading(url, (i - 1) * (filesize / treadMax), i * (filesize / treadMax), f)
-
+        while
+        pass
