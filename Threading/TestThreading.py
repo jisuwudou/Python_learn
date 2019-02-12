@@ -1,4 +1,5 @@
 # https://www.cnblogs.com/owasp/p/6413480.html
+#多线程下载一张图片
 import threading
 import requests
 import time
