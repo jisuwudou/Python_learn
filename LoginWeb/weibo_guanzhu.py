@@ -95,7 +95,7 @@ def guanzhugroup(groupid):
 
     time.sleep(40)
 
-guanzhugroup(4331227429460752)
+guanzhugroup(4286840461013528)
 
 
 
