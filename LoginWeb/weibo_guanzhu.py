@@ -26,7 +26,7 @@ headers = {
 
 def guanzhugroup(groupid):
 
-    for nums in range(1, 12):  # 这里是模拟页数，在获取groupMembersList的返回信息里有max_pageprint('***************第几页='+str(nums))
+    for nums in range(2, 9):  # 这里是模拟页数，在获取groupMembersList的返回信息里有max_pageprint('***************第几页='+str(nums))
         print('***************第几页='+str(nums))
 
         urluser = "https://m.weibo.cn/groupChat/userChat/groupMembersList?group_id=%s&page=%d" % (groupid, nums)
@@ -95,7 +95,7 @@ def guanzhugroup(groupid):
 
     time.sleep(40)
 
-guanzhugroup(4332098712664776)
+guanzhugroup(4331227429460752)
 
 
 
